@@ -19,7 +19,7 @@ This project includes my learning of website structure and it's components it he
 ### List Part
 - I had to style the "here" Links without using classes or IDs. So i used: 
 - direct child selector to target the first link and second link.
-- In 2nd list i Pseudo-classes like `:first-child`, `:last-child`, and `:nth-child().
+- In 2nd list i use Pseudo-classes like `:first-child`, `:last-child`, and `:nth-child().
 
 ### run this file 
 - first download both files (index.html + style.css), keep them together, open index.html in any browser. That's it!
