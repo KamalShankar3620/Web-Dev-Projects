@@ -10,12 +10,8 @@ h2 {
     font-size: 40px;
 }
 
-h2 span {
-    color: red;
-}
-
 #bglime {
-    background-color: lightgreen;
+    background-color: limegreen;
 }
 
 p {
