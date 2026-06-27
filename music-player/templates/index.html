@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Antigravity Music Player - Stream your favorite songs, artists, albums, and playlists from YouTube Music.">
+    <title>Antigravity Music Player</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Remix Icon CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Ambient Glow Background -->
+    <div id="ambient-glow" class="ambient-glow"></div>
+    <div id="ambient-glow-secondary" class="ambient-glow secondary"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="ri-pulse-fill brand-icon"></i>
+                <h1 class="brand-name">Antigravity</h1>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" id="nav-home" data-view="home">
+                    <i class="ri-home-5-line"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-search" data-view="search">
+                    <i class="ri-search-line"></i>
+                    <span>Search</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-queue" data-view="queue">
+                    <i class="ri-playlist-line"></i>
+                    <span>Play Queue</span>
+                    <span class="queue-badge" id="queue-badge" style="display: none;">0</span>
+                </a>
+                <a href="#" class="nav-item" id="nav-lyrics" data-view="lyrics">
+                    <i class="ri-music-2-line"></i>
+                    <span>Lyrics</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <h3>Quick Views</h3>
+                <div class="quick-links">
+                    <button class="quick-link" onclick="quickSearch('Lofi Chill')">Lofi Chill</button>
+                    <button class="quick-link" onclick="quickSearch('Synthwave')">Synthwave</button>
+                    <button class="quick-link" onclick="quickSearch('Jazz')">Jazz & Blues</button>
+                    <button class="quick-link" onclick="quickSearch('Acoustic Hits')">Acoustic Hits</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="main-header">
+                <div class="header-nav-buttons">
+                    <button class="nav-btn" id="history-back-btn" title="Back"><i class="ri-arrow-left-s-line"></i></button>
+                </div>
+                
+                <div class="search-bar-container" id="header-search-bar" style="display: none;">
+                    <i class="ri-search-line search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search songs, artists, albums, or playlists..." autocomplete="off">
+                    <button id="search-clear-btn" style="display: none;"><i class="ri-close-line"></i></button>
+                </div>
+            </header>
+
+            <!-- Scrollable Viewport -->
+            <div class="viewport" id="viewport">
+                <!-- Home View -->
+                <section class="view active" id="view-home">
+                    <div class="hero-section">
+                        <span class="hero-tagline">Stream YouTube Music</span>
+                        <h2>Welcome to Antigravity</h2>
+                        <p>Search, play, discover charts, and read lyrics for millions of tracks.</p>
+                        <button class="btn btn-primary" onclick="showSearchView()">
+                            <i class="ri-search-line"></i> Start Listening
+                        </button>
+                    </div>
+
+                    <div class="section-container">
+                        <div class="section-header">
+                            <h3>Trending Songs</h3>
+                        </div>
+                        <div class="tracks-grid" id="charts-songs">
+                            <!-- Dynamically loaded -->
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="section-container">
+                        <div class="section-header">
+                            <h3>Popular Playlists</h3>
+                        </div>
+                        <div class="cards-grid" id="charts-playlists">
+                            <!-- Dynamically loaded -->
+                            <div class="loading-spinner"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Search View -->
+                <section class="view" id="view-search">
+                    <div class="search-header-padding">
+                        <h2>Explore</h2>
+                        <div class="search-filter-tabs">
+                            <button class="filter-tab active" data-filter="songs">Songs</button>
+                            <button class="filter-tab" data-filter="albums">Albums</button>
+                            <button class="filter-tab" data-filter="artists">Artists</button>
+                            <button class="filter-tab" data-filter="playlists">Playlists</button>
+                        </div>
+                    </div>
+
+                    <div class="search-results-container">
+                        <div id="search-results-list" class="results-layout">
+                            <div class="search-placeholder">
+                                <i class="ri-search-2-line"></i>
+                                <p>Search for your favorite tracks or artists to begin</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Queue View -->
+                <section class="view" id="view-queue">
+                    <div class="section-header-large">
+                        <h2>Play Queue</h2>
+                        <button class="btn btn-secondary btn-sm" id="clear-queue-btn">Clear Queue</button>
+                    </div>
+                    
+                    <div class="queue-container">
+                        <div class="current-track-row">
+                            <h3>Now Playing</h3>
+                            <div id="queue-now-playing-container">
+                                <!-- Dynamically loaded -->
+                                <p class="empty-message">Nothing playing right now.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="upcoming-tracks-list">
+                            <h3>Next Up</h3>
+                            <div id="queue-upcoming-list">
+                                <!-- Dynamically loaded -->
+                                <p class="empty-message">Queue is empty.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lyrics View -->
+                <section class="view" id="view-lyrics">
+                    <div class="lyrics-container">
+                        <div class="lyrics-header" id="lyrics-header-info">
+                            <h2 id="lyrics-song-title">No Song Selected</h2>
+                            <p id="lyrics-song-artist">Play a song to view lyrics</p>
+                        </div>
+                        <div class="lyrics-body-scroller">
+                            <div id="lyrics-content" class="lyrics-text">
+                                Select a song and start playing. If lyrics are available on YouTube Music, they will be shown here.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detail Views (Dynamically filled) -->
+                <section class="view" id="view-detail">
+                    <div id="detail-content-area"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Persistent Bottom Player Bar -->
+    <footer class="player-bar">
+        <!-- Progress Bar Overlay (Top of player bar) -->
+        <div class="progress-bar-container">
+            <span class="time-label" id="player-time-current">0:00</span>
+            <div class="progress-track" id="player-progress-track">
+                <div class="progress-fill" id="player-progress-fill"></div>
+                <div class="progress-thumb" id="player-progress-thumb"></div>
+            </div>
+            <span class="time-label" id="player-time-total">0:00</span>
+        </div>
+
+        <div class="player-bar-inner">
+            <!-- Song Information -->
+            <div class="player-track-info">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><rect width='100%' height='100%' fill='%231e293b'/><circle cx='50' cy='50' r='20' fill='%23475569'/></svg>" 
+                     alt="Album Art" class="player-thumbnail" id="player-thumb">
+                <div class="player-metadata">
+                    <div class="player-title" id="player-title">Not Playing</div>
+                    <div class="player-artist" id="player-artist">-</div>
+                </div>
+                <button class="track-action-btn" id="player-like-btn" title="Add to queue list">
+                    <i class="ri-heart-line"></i>
+                </button>
+            </div>
+
+            <!-- Central Control Buttons -->
+            <div class="player-controls">
+                <button class="control-btn" id="btn-shuffle" title="Shuffle"><i class="ri-shuffle-line"></i></button>
+                <button class="control-btn" id="btn-prev" title="Previous"><i class="ri-skip-back-fill"></i></button>
+                <button class="control-btn play-pause-btn" id="btn-play" title="Play"><i class="ri-play-fill"></i></button>
+                <button class="control-btn" id="btn-next" title="Next"><i class="ri-skip-forward-fill"></i></button>
+                <button class="control-btn" id="btn-loop" title="Repeat"><i class="ri-repeat-line"></i></button>
+            </div>
+
+            <!-- Right-side Action Controls -->
+            <div class="player-actions">
+                <button class="action-btn" id="btn-show-lyrics" title="Lyrics"><i class="ri-music-2-line"></i></button>
+                <button class="action-btn" id="btn-show-queue" title="Play Queue"><i class="ri-playlist-play-line"></i></button>
+                
+                <div class="volume-container">
+                    <button class="action-btn" id="btn-mute" title="Mute"><i class="ri-volume-up-line"></i></button>
+                    <div class="volume-track" id="volume-track">
+                        <div class="volume-fill" id="volume-fill" style="width: 70%;"></div>
+                        <div class="volume-thumb" id="volume-thumb" style="left: 70%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Native Audio Element (Hidden) -->
+    <audio id="audio-engine" style="display: none;"></audio>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/player.js') }}"></script>
+</body>
+</html>

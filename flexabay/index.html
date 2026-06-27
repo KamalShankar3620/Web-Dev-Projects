@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        // Immediately set the theme from localStorage to avoid flashing
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlexaBay.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,500&display=swap"
+        rel="stylesheet">
+
+
+</head>
+
+<body>
+    <!-- nav section -->
+    <nav>
+        <a href="index.html" class="logo">Flexa<span>Bay</span></a>
+        <div class="nav-right">
+            <ul>
+                <li><a href="#services">Services</a></li>
+                <li><a href="pages/about.html">About Us</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="pages/login.html" class="nav-login">Login</a></li>
+                <li><a href="pages/submit.html" class="nav-cta">Get Started</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- hero section -->
+    <section class="hero-container">
+        <div class="hero-left">
+            <div class="eyebrow">
+                Trusted by thousands of students &amp; researchers
+            </div>
+            <h1>
+                Academic <br>work that passes <br>
+                <span class="gradient-text">Every check. Every time.</span>
+            </h1>
+            <p>FlexaBay helps students, researchers, and academics eliminate plagiarism, remove AI detection flags, and
+                produce flawlessly referenced, polished academic work.</p>
+            <div class="hero-btns">
+                <a href="pages/submit.html" class="btn-primary">Get Started →</a>
+                <a href="#how" class="btn-ghost">See how it works</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+        <div class="trust-item">
+            <span class="trust-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+            </span>
+            <span><strong>100% Confidential</strong> — your work, your privacy</span>
+        </div>
+        <div class="trust-item">
+            <span class="trust-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                </svg>
+            </span>
+            <span><strong>24hr Turnaround</strong> — on most requests</span>
+        </div>
+        <div class="trust-item">
+            <span class="trust-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <path d="m9 12 2 2 4-4" />
+                </svg>
+            </span>
+            <span><strong>Plagiarism-free</strong> — Turnitin &amp; AI-detection safe</span>
+        </div>
+        <div class="trust-item">
+            <span class="trust-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="7" />
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                </svg>
+            </span>
+            <span><strong>Expert Writers</strong> — PhD-qualified academics</span>
+        </div>
+    </div>
+
+    <!-- Befor / After` -->
+    <section class="transform-section">
+        <div class="section-label">The FlexaBay Effect</div>
+        <h2 class="section-title">From flagged to flawless</h2>
+        <p class="section-sub">Hover to see exactly how we transform your content — no flags, no red marks, no
+            compromises.
+        </p>
+
+        <div class="ba-wrapper" role="img" aria-label="Before and after comparison of plagiarism removal">
+            <!-- Before -->
+            <div class="ba-before">
+                <span class="ba-label">Before FlexaBay</span>
+                <p class="ba-text">
+                    The <span class="ba-highlight">study by Johnson (2018) found that climate change directly
+                        impacts</span>
+                    agricultural output in sub-Saharan Africa, with <span class="ba-highlight">yields dropping by up
+                        to
+                        30% over
+                        the next decade</span> as temperatures rise and rainfall patterns shift unpredictably.
+                </p>
+            </div>
+            <!-- After -->
+            <div class="ba-after">
+                <span class="ba-label">After FlexaBay</span>
+                <p class="ba-text">
+                    Research indicates that <span class="ba-clean">escalating global temperatures and erratic
+                        precipitation are
+                        projected to reduce crop productivity</span> across sub-Saharan Africa by nearly a third
+                    within
+                    ten years,
+                    posing significant food security challenges for the region <span class="ba-clean">(Johnson,
+                        2018)</span>.
+                </p>
+            </div>
+            <div class="ba-divider"></div>
+        </div>
+        <p class="ba-hint">↔ Hover the card to reveal the transformation</p>
+    </section>
+
+    <!-- Services -->
+    <section class="services-section" id="services">
+        <div class="services-header">
+            <div class="section-label">What We Do</div>
+            <h2 class="section-title">Comprehensive Academic <br>
+                Writing Support</h2>
+            <p class="section-sub">From plagiarism removal to citation perfection — we handle the technical burdens
+                of
+                academic writing so you can focus on your ideas.</p>
+        </div>
+        <div class="services-grid">
+
+            <div class="service-card" id="service-plagiarism">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.75z" />
+                        <path d="m9 12 2 2 4-4" />
+                    </svg>
+                </div>
+                <h3>Plagiarism Removal</h3>
+                <p>We deep-rewrite flagged content, restructure arguments, and ensure your submission clears
+                    Turnitin,
+                    iThenticate, and every similarity checker with a score below 10%.</p>
+                <span class="service-tag">Turnitin Safe</span>
+            </div>
+
+            <div class="service-card" id="service-aibypass">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19H5a4 4 0 0 1-4-4v-3a8 8 0 0 1 16 0v3a4 4 0 0 1-4 4h-4Z" />
+                        <path d="M9 15v4" />
+                        <path d="M15 15v4" />
+                        <path d="M7 11.5c0-2.5 1.5-5 4-5s4 2.5 4 5" />
+                    </svg>
+                </div>
+                <h3>AI Detection Bypass</h3>
+                <p>AI-written content gets humanised by our expert editors — rewritten to reflect authentic academic
+                    voice,
+                    natural cadence, and discipline-appropriate vocabulary.</p>
+                <span class="service-tag">GPTZero Safe</span>
+            </div>
+
+            <div class="service-card" id="service-referencing">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                    </svg>
+                </div>
+                <h3>Referencing &amp; Citations</h3>
+                <p>APA, MLA, Harvard, Chicago, Vancouver — any style, formatted perfectly. We also build full
+                    bibliography lists
+                    and in-text citations from scratch.</p>
+                <span class="service-tag">All Citation Styles</span>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                        <path d="m15 5 4 4" />
+                    </svg>
+                </div>
+                <h3>Proofreading &amp; Editing</h3>
+                <p>Grammar, punctuation, clarity, coherence, and academic tone — our editors polish every sentence
+                    so your ideas
+                    shine through flawlessly.</p>
+                <span class="service-tag">Native English Editors</span>
+            </div>
+
+            <div class="service-card" id="service-essay">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                        <path d="M10 9H8" />
+                        <path d="M16 13H8" />
+                        <path d="M16 17H8" />
+                    </svg>
+                </div>
+                <h3>Custom Essay Writing</h3>
+                <p>Receive a fully original, research-backed essay or report written by subject-matter experts,
+                    tailored to your
+                    brief, level, and institution's guidelines.</p>
+                <span class="service-tag">100% Original</span>
+            </div>
+
+            <div class="service-card" id="service-dissertation">
+                <div class="service-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+                        <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5" />
+                    </svg>
+                </div>
+                <h3>Dissertation Support</h3>
+                <p>Chapter-by-chapter editing, methodology structuring, literature review polish, and final
+                    submission
+                    preparation — from first draft to final submission.</p>
+                <span class="service-tag">PhD-Level Support</span>
+            </div>
+
+        </div>
+    </section>
+
+
+
+
+    <!-- How it works -->
+    <section class="how-section" id="how">
+        <div class="how-header">
+            <div class="section-label">The Process</div>
+            <h2 class="section-title">Four steps to a perfect submission</h2>
+            <p class="section-sub">Simple, fast, and completely confidential from start to finish.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h4>Upload Your Work</h4>
+                <p>Share your document, brief, or flagged report securely through our platform.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h4>We Analyse It</h4>
+                <p>Our system and expert team assess plagiarism levels, AI flags, and quality gaps.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h4>Experts Get to Work</h4>
+                <p>PhD-qualified writers and editors rewrite, polish, and reference your content.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h4>Receive &amp; Submit</h4>
+                <p>Get your polished, verified document — ready to submit with confidence.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- testimonials -->
+    <section class="testimonials-section" id="reviews">
+        <div class="testimonials-header">
+            <div class="section-label">Student Stories</div>
+            <h2 class="section-title">Trusted by thousands</h2>
+            <p class="section-sub">Real results from real students and researchers around the world.</p>
+        </div>
+        <div class="testimonials-grid">
+
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">"My dissertation had a 34% Turnitin score the night before submission.
+                    FlexaBay
+                    brought it down to 6% in under 12 hours without changing a single key argument. Absolute
+                    lifesavers."</p>
+                <div class="testimonial-author">
+                    <div class="avatar" style="background: #4F46E5;">AM</div>
+                    <div>
+                        <div class="author-name">Aisha M.</div>
+                        <div class="author-role">MSc Finance, University of Manchester</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">"I used AI to draft my lit review and it got flagged immediately.
+                    FlexaBay
+                    humanised
+                    the entire 4,000-word section and it passed both GPTZero and my professor's reading. Incredible
+                    work."</p>
+                <div class="testimonial-author">
+                    <div class="avatar" style="background: #7C3AED;">RK</div>
+                    <div>
+                        <div class="author-name">Rohan K.</div>
+                        <div class="author-role">PhD Candidate, IIT Delhi</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p class="testimonial-text">"The referencing service is phenomenal. I had 80 sources in a mixed
+                    jumble
+                    of styles
+                    — FlexaBay reformatted everything into perfect APA 7th within 6 hours. Worth every penny."</p>
+                <div class="testimonial-author">
+                    <div class="avatar" style="background: #0891B2;">SC</div>
+                    <div>
+                        <div class="author-name">Sarah C.</div>
+                        <div class="author-role">BA History, University of Toronto</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="faq-header">
+            <span class="faq-label">FAQ</span>
+            <h2>Frequently asked questions</h2>
+            <p>About FlexaBay's AI detection, plagiarism removal, and humanization tools</p>
+        </div>
+
+        <div class="faq-grid">
+
+            <!-- Column 1 -->
+            <div>
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">What is FlexaBay and how is it different?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">FlexaBay is an AI-content and plagiarism remediation platform. Unlike basic
+                        checkers that only flag issues, FlexaBay runs a parallel scan and lets you fix flagged sections
+                        with targeted rewrites instead of starting from scratch.</div>
+                </div>
+
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">How does the color-coded breakdown work?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">After scanning, your document is highlighted in three colors: red for direct
+                        plagiarism (with source links), purple for AI-generated blocks, and orange for hybrid text —
+                        content that was AI-paraphrased from an existing source.</div>
+                </div>
+
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">Which file formats do you support?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">FlexaBay accepts .docx, .pdf, and .txt files up to 20 MB, as well as direct
+                        text paste. You can export cleaned documents back to .docx or .pdf once edits are applied.</div>
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div>
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">What are the three humanization modes?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">Light fixes phrasing and flow with minor vocabulary swaps. Balanced
+                        restructures sentence syntax to bypass major AI detectors — best for most cases. Deep performs a
+                        complete semantic rewrite, keeping the meaning while rebuilding every sentence from scratch.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">How does the citation generator work?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">For any red-flagged (plagiarism) section, FlexaBay auto-identifies the
+                        original source and generates a formatted citation in APA, MLA, or Chicago style. You can copy
+                        it or inject it directly into your document.</div>
+                </div>
+
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">Can I rewrite only specific sections?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">Yes — FlexaBay's targeted smart-removal lets you click any flagged block
+                        individually. You choose the rewrite intensity per section, so clean passages stay untouched
+                        while only problem areas are processed.</div>
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div>
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">Which AI detectors does FlexaBay bypass?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">The Balanced and Deep modes are optimized against GPTZero, Turnitin's AI
+                        module, Originality.ai, Copyleaks, and Winston AI. Results may vary as detector algorithms
+                        update.</div>
+                </div>
+
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">Is my document kept private?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">Documents are processed in an encrypted session and are never stored after
+                        your session ends. FlexaBay does not use your content to train models or share it with third
+                        parties.</div>
+                </div>
+
+                <div class="faq-item" onclick="toggle(this)">
+                    <div class="faq-q">
+                        <span class="faq-q-text">How accurate is the AI detection scan?</span>
+                        <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </div>
+                    <div class="faq-answer">FlexaBay combines a web-database plagiarism match with an independent LLM
+                        pattern scan, cross-referencing both results to reduce false positives. Accuracy benchmarks are
+                        published on our transparency page.</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- CTA Banner -->
+    <section class="cta-section">
+        <div class="cta-inner">
+            <h2>Your Research Deserves a<br /><span class="gradient-text">Perfect Submission.</span></h2>
+            <p>Join thousands of researchers who trust FlexaBay. Email us today for an instant quote</p>
+            <div class="cta-email-wrapper">
+                <form id="ctaEmailForm" class="cta-email-form" onsubmit="handleCtaSubmit(event)">
+                    <div class="cta-input-group">
+                        <svg class="cta-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="16" x="2" y="4" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                        <input type="email" id="ctaEmail" class="cta-email-input" placeholder="Enter your email address"
+                            required autocomplete="email" />
+                    </div>
+                    <button type="submit" class="cta-email-btn" id="ctaSubmitBtn">
+                        <span class="btn-text">Get Quote</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <a href="#" class="logo">Flexa<span>Bay</span></a>
+                <p>Helping students, researchers, and academics produce flawlessly referenced, original academic
+                    work —
+                    every
+                    time.</p>
+            </div>
+
+            <div class="footer-links">
+                <h5>Services</h5>
+                <ul>
+                    <li><a href="#service-plagiarism">Plagiarism Removal</a></li>
+                    <li><a href="#service-aibypass">AI Detection Bypass</a></li>
+                    <li><a href="#service-essay">Essay Writing</a></li>
+                    <li><a href="#service-dissertation">Dissertation Support</a></li>
+                    <li><a href="#service-referencing">Referencing</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h5>Company</h5>
+                <ul>
+                    <li><a href="pages/about.html">About Us</a></li>
+                    <li><a href="#how">How It Works</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="pages/blog.html">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="pages/privacy.html">Privacy Policy</a></li>
+                    <li><a href="pages/terms.html">Terms of Service</a></li>
+                    <li><a href="pages/refund.html">Refund Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 FlexaBay. All rights reserved.</p>
+            <div class="footer-socials">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+                    aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                    </svg>
+                </a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+                    aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" />
+                    </svg>
+                </a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-btn"
+                    aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.11.82-.26.82-.577v-2.234c-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222v3.293c0 .319.22.694.825.576C20.565 21.795 24 17.3 24 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
