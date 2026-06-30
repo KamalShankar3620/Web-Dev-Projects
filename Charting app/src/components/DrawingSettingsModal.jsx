@@ -36,16 +36,76 @@ const DEFAULT_SETTINGS = {
   }
 };
 
+const DEFAULT_FIBONACCI_SETTINGS = {
+  trendLineVisible: true,
+  trendLineColor: '#787b86',
+  trendLineWidth: 1,
+  trendLineStyle: 'dashed',
+  
+  levelsLineWidth: 1,
+  levelsLineStyle: 'solid',
+  extendLeft: false,
+  extendRight: false,
+  
+  useOneColor: false,
+  oneColor: '#38bdf8',
+  
+  backgroundVisible: true,
+  backgroundOpacity: 0.15,
+  
+  reverse: false,
+  showPrices: true,
+  showLevels: true,
+  levelsFormat: 'ratio',
+  labelsPosition: 'left',
+  fontSize: 10,
+  
+  levels: [
+    { active: true, ratio: 0.0, color: '#787b86', text: '' },
+    { active: true, ratio: 0.236, color: '#ef5350', text: '' },
+    { active: true, ratio: 0.382, color: '#ff9800', text: '' },
+    { active: true, ratio: 0.5, color: '#4caf50', text: '' },
+    { active: true, ratio: 0.618, color: '#009688', text: '' },
+    { active: true, ratio: 0.786, color: '#00bcd4', text: '' },
+    { active: true, ratio: 1.0, color: '#787b86', text: '' },
+    { active: true, ratio: 1.618, color: '#2196f3', text: '' },
+    { active: true, ratio: 2.618, color: '#9c27b0', text: '' },
+    { active: false, ratio: 3.618, color: '#ab47bc', text: '' },
+    { active: false, ratio: 4.236, color: '#e91e63', text: '' }
+  ],
+  visibility: {
+    seconds: true,
+    minutes: true,
+    hours: true,
+    days: true,
+  }
+};
+
 export default function DrawingSettingsModal({ 
   drawing, 
   isOpen, 
   onClose, 
   onSave 
-}) {
+ }) {
   if (!isOpen || !drawing) return null;
-
+ 
   const [activeTab, setActiveTab] = useState('style');
   const [settings, setSettings] = useState(() => {
+    if (drawing.type === 'fibonacci') {
+      const base = {
+        ...DEFAULT_FIBONACCI_SETTINGS,
+        ...(drawing.settings || {}),
+        visibility: {
+          ...DEFAULT_FIBONACCI_SETTINGS.visibility,
+          ...(drawing.settings?.visibility || {})
+        }
+      };
+      if (drawing.settings?.levels) {
+        base.levels = drawing.settings.levels;
+      }
+      return base;
+    }
+
     // Clone properties from drawing or use default settings schema
     return {
       ...DEFAULT_SETTINGS,
@@ -137,18 +197,22 @@ export default function DrawingSettingsModal({
           >
             Style
           </button>
-          <button 
-            className={`tab-link ${activeTab === 'text' ? 'active' : ''}`}
-            onClick={() => setActiveTab('text')}
-          >
-            Text
-          </button>
-          <button 
-            className={`tab-link ${activeTab === 'stats' ? 'active' : ''}`}
-            onClick={() => setActiveTab('stats')}
-          >
-            Stats
-          </button>
+          {drawing.type !== 'fibonacci' && (
+            <>
+              <button 
+                className={`tab-link ${activeTab === 'text' ? 'active' : ''}`}
+                onClick={() => setActiveTab('text')}
+              >
+                Text
+              </button>
+              <button 
+                className={`tab-link ${activeTab === 'stats' ? 'active' : ''}`}
+                onClick={() => setActiveTab('stats')}
+              >
+                Stats
+              </button>
+            </>
+          )}
           <button 
             className={`tab-link ${activeTab === 'coordinates' ? 'active' : ''}`}
             onClick={() => setActiveTab('coordinates')}
@@ -167,7 +231,7 @@ export default function DrawingSettingsModal({
         <div className="settings-modal-content">
           
           {/* TAB 1: STYLE */}
-          {activeTab === 'style' && (
+          {activeTab === 'style' && drawing.type !== 'fibonacci' && (
             <div className="form-group-column">
               <div className="form-row-item">
                 <label>Line Color</label>
@@ -251,6 +315,272 @@ export default function DrawingSettingsModal({
                   <span>Price Labels on Axis</span>
                 </label>
               </div>
+            </div>
+          )}
+
+          {/* TAB 1: STYLE (FIBONACCI OPTIONS) */}
+          {activeTab === 'style' && drawing.type === 'fibonacci' && (
+            <div className="form-group-column scrollbar" style={{ maxHeight: '350px', overflowY: 'auto', paddingRight: '6px' }}>
+              
+              {/* Trendline controls */}
+              <div className="form-row-grid">
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.trendLineVisible}
+                    onChange={(e) => updateSetting('trendLineVisible', e.target.checked)}
+                  />
+                  <span>Trend Line</span>
+                </label>
+                
+                {settings.trendLineVisible && (
+                  <div className="form-row-item">
+                    <select 
+                      value={settings.trendLineStyle}
+                      onChange={(e) => updateSetting('trendLineStyle', e.target.value)}
+                    >
+                      <option value="solid">Solid</option>
+                      <option value="dashed">Dashed</option>
+                      <option value="dotted">Dotted</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              {/* Levels Line controls */}
+              <div className="form-row-grid">
+                <div className="form-row-item">
+                  <label>Levels Thickness</label>
+                  <select 
+                    value={settings.levelsLineWidth}
+                    onChange={(e) => updateSetting('levelsLineWidth', parseInt(e.target.value))}
+                  >
+                    <option value={1}>1px</option>
+                    <option value={2}>2px</option>
+                    <option value={3}>3px</option>
+                  </select>
+                </div>
+                
+                <div className="form-row-item">
+                  <label>Levels Style</label>
+                  <select 
+                    value={settings.levelsLineStyle}
+                    onChange={(e) => updateSetting('levelsLineStyle', e.target.value)}
+                  >
+                    <option value="solid">Solid</option>
+                    <option value="dashed">Dashed</option>
+                    <option value="dotted">Dotted</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Extend Lines */}
+              <div className="form-row-grid">
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.extendLeft}
+                    onChange={(e) => updateSetting('extendLeft', e.target.checked)}
+                  />
+                  <span>Extend Lines Left</span>
+                </label>
+
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.extendRight}
+                    onChange={(e) => updateSetting('extendRight', e.target.checked)}
+                  />
+                  <span>Extend Lines Right</span>
+                </label>
+              </div>
+
+              {/* Toggles */}
+              <div className="form-row-grid">
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.reverse}
+                    onChange={(e) => updateSetting('reverse', e.target.checked)}
+                  />
+                  <span>Reverse Levels</span>
+                </label>
+
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.showPrices}
+                    onChange={(e) => updateSetting('showPrices', e.target.checked)}
+                  />
+                  <span>Show Prices</span>
+                </label>
+              </div>
+
+              <div className="form-row-grid">
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.showLevels}
+                    onChange={(e) => updateSetting('showLevels', e.target.checked)}
+                  />
+                  <span>Show Levels</span>
+                </label>
+
+                {settings.showLevels && (
+                  <div className="form-row-item">
+                    <select 
+                      value={settings.levelsFormat}
+                      onChange={(e) => updateSetting('levelsFormat', e.target.value)}
+                    >
+                      <option value="ratio">Ratio (e.g. 0.618)</option>
+                      <option value="percent">Percent (e.g. 61.8%)</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+
+              <div className="form-row-grid">
+                <div className="form-row-item">
+                  <label>Labels Placement</label>
+                  <select 
+                    value={settings.labelsPosition}
+                    onChange={(e) => updateSetting('labelsPosition', e.target.value)}
+                  >
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+                
+                <div className="form-row-item">
+                  <label>Labels Font Size</label>
+                  <select 
+                    value={settings.fontSize}
+                    onChange={(e) => updateSetting('fontSize', parseInt(e.target.value))}
+                  >
+                    <option value={9}>9px</option>
+                    <option value={10}>10px</option>
+                    <option value={12}>12px</option>
+                    <option value={14}>14px</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Background Opacity */}
+              <div className="form-row-grid">
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.backgroundVisible}
+                    onChange={(e) => updateSetting('backgroundVisible', e.target.checked)}
+                  />
+                  <span>Background Bands</span>
+                </label>
+                
+                {settings.backgroundVisible && (
+                  <div className="form-row-item">
+                    <label style={{ fontSize: '9px' }}>Opacity: {Math.round(settings.backgroundOpacity * 100)}%</label>
+                    <input 
+                      type="range" 
+                      min="0.0" 
+                      max="0.5" 
+                      step="0.05"
+                      value={settings.backgroundOpacity}
+                      onChange={(e) => updateSetting('backgroundOpacity', parseFloat(e.target.value))}
+                      style={{ cursor: 'pointer', accentColor: 'var(--color-accent)' }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Use One Color */}
+              <div className="form-row-grid">
+                <label className="checkbox-label">
+                  <input 
+                    type="checkbox" 
+                    checked={settings.useOneColor}
+                    onChange={(e) => updateSetting('useOneColor', e.target.checked)}
+                  />
+                  <span>Use One Color</span>
+                </label>
+                
+                {settings.useOneColor && (
+                  <div className="color-pickers-row" style={{ marginTop: 0 }}>
+                    {colorOptions.map(c => (
+                      <button 
+                        key={c}
+                        className={`color-bubble ${settings.oneColor === c ? 'active' : ''}`}
+                        style={{ backgroundColor: c, width: '18px', height: '18px' }}
+                        onClick={() => updateSetting('oneColor', c)}
+                      >
+                        {settings.oneColor === c && <Check size={8} style={{ color: c === '#ffffff' ? '#000000' : '#ffffff' }} />}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Levels list editor table */}
+              <div className="form-row-item" style={{ marginTop: 12 }}>
+                <label style={{ marginBottom: 6 }}>Fibonacci Ratio Levels</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, border: '1px solid var(--border-color)', borderRadius: '6px', padding: '10px', backgroundColor: 'var(--bg-main)' }}>
+                  {settings.levels.map((level, idx) => (
+                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                      
+                      <input 
+                        type="checkbox" 
+                        checked={level.active}
+                        onChange={(e) => {
+                          const updatedLevels = [...settings.levels];
+                          updatedLevels[idx].active = e.target.checked;
+                          updateSetting('levels', updatedLevels);
+                        }}
+                      />
+                      
+                      {/* Mini color selector */}
+                      <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                        <div 
+                          style={{ width: '16px', height: '16px', borderRadius: '50%', backgroundColor: level.color, border: '1px solid rgba(255,255,255,0.2)', cursor: 'pointer' }}
+                          onClick={() => {
+                            const activeIdx = colorOptions.indexOf(level.color);
+                            const nextColor = colorOptions[(activeIdx + 1) % colorOptions.length];
+                            const updatedLevels = [...settings.levels];
+                            updatedLevels[idx].color = nextColor;
+                            updateSetting('levels', updatedLevels);
+                          }}
+                          title="Click to cycle colors"
+                        />
+                      </div>
+
+                      <input 
+                        type="number" 
+                        step="0.001" 
+                        value={level.ratio} 
+                        style={{ width: '60px', padding: '2px 4px', fontSize: '11px', backgroundColor: 'var(--bg-panel)', border: '1px solid var(--border-color)', color: '#ffffff' }}
+                        onChange={(e) => {
+                          const updatedLevels = [...settings.levels];
+                          updatedLevels[idx].ratio = parseFloat(e.target.value) || 0;
+                          updateSetting('levels', updatedLevels);
+                        }}
+                      />
+
+                      <input 
+                        type="text" 
+                        placeholder="Add text..." 
+                        value={level.text || ''} 
+                        style={{ flex: 1, padding: '2px 6px', fontSize: '11px', backgroundColor: 'var(--bg-panel)', border: '1px solid var(--border-color)', color: '#ffffff' }}
+                        onChange={(e) => {
+                          const updatedLevels = [...settings.levels];
+                          updatedLevels[idx].text = e.target.value;
+                          updateSetting('levels', updatedLevels);
+                        }}
+                      />
+
+                    </div>
+                  ))}
+                </div>
+              </div>
+
             </div>
           )}
 

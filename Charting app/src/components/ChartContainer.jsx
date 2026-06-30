@@ -390,12 +390,6 @@ export default function ChartContainer({
     };
 
     chart.timeScale().subscribeVisibleLogicalRangeChange(handleScroll);
-    
-    try {
-      chart.priceScale('right').subscribeVisiblePriceRangeChange(handleScroll);
-    } catch (e) {
-      console.warn("Price scale subscription failed:", e);
-    }
 
     // Force initial redraw
     drawCanvas();
@@ -404,7 +398,6 @@ export default function ChartContainer({
       if (chartRef.current) {
         try {
           chartRef.current.timeScale().unsubscribeVisibleLogicalRangeChange(handleScroll);
-          chartRef.current.priceScale('right').unsubscribeVisiblePriceRangeChange(handleScroll);
         } catch (e) {}
       }
     };
@@ -512,7 +505,7 @@ export default function ChartContainer({
         }
       } 
       
-      else if (drawing.type === 'trendline' || drawing.type === 'fibonacci' || drawing.type === 'pattern' || drawing.type === 'brush') {
+      else if (drawing.type === 'trendline' || drawing.type === 'pattern' || drawing.type === 'brush') {
         const x1 = drawing.p1.logical !== undefined
           ? chart.timeScale().logicalToCoordinate(drawing.p1.logical)
           : chart.timeScale().timeToCoordinate(drawing.p1.time);
@@ -644,6 +637,169 @@ export default function ChartContainer({
               ctx.fillText(line, mx - boxWidth / 2 + 10, my + 15 + index * 15);
             });
           }
+        }
+      }
+      
+      else if (drawing.type === 'fibonacci') {
+        const x1 = drawing.p1.logical !== undefined
+          ? chart.timeScale().logicalToCoordinate(drawing.p1.logical)
+          : chart.timeScale().timeToCoordinate(drawing.p1.time);
+        const y1 = series.priceToCoordinate(drawing.p1.price);
+        const x2 = drawing.p2.logical !== undefined
+          ? chart.timeScale().logicalToCoordinate(drawing.p2.logical)
+          : chart.timeScale().timeToCoordinate(drawing.p2.time);
+        const y2 = series.priceToCoordinate(drawing.p2.price);
+
+        if (x1 === null || y1 === null || x2 === null || y2 === null) return;
+
+        const fibSettings = {
+          trendLineVisible: true,
+          trendLineColor: '#787b86',
+          trendLineWidth: 1,
+          trendLineStyle: 'dashed',
+          levelsLineWidth: 1,
+          levelsLineStyle: 'solid',
+          extendLeft: false,
+          extendRight: false,
+          useOneColor: false,
+          oneColor: '#38bdf8',
+          backgroundVisible: true,
+          backgroundOpacity: 0.15,
+          reverse: false,
+          showPrices: true,
+          showLevels: true,
+          levelsFormat: 'ratio',
+          labelsPosition: 'left',
+          fontSize: 10,
+          levels: [],
+          ...settings
+        };
+
+        // 1. Draw Trendline if visible
+        if (fibSettings.trendLineVisible) {
+          ctx.strokeStyle = fibSettings.trendLineColor;
+          ctx.lineWidth = fibSettings.trendLineWidth;
+          if (fibSettings.trendLineStyle === 'dashed') {
+            ctx.setLineDash([4, 4]);
+          } else if (fibSettings.trendLineStyle === 'dotted') {
+            ctx.setLineDash([1, 3]);
+          } else {
+            ctx.setLineDash([]);
+          }
+          ctx.beginPath();
+          ctx.moveTo(x1, y1);
+          ctx.lineTo(x2, y2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // 2. Prepare levels and calculate price locations
+        const priceDiff = drawing.p2.price - drawing.p1.price;
+        const activeLevels = (fibSettings.levels || [])
+          .filter(lvl => lvl.active)
+          .map(lvl => {
+            const ratioVal = lvl.ratio;
+            const priceVal = fibSettings.reverse 
+              ? drawing.p2.price - ratioVal * priceDiff
+              : drawing.p1.price + ratioVal * priceDiff;
+            const levelY = series.priceToCoordinate(priceVal);
+            return {
+              ...lvl,
+              price: priceVal,
+              y: levelY
+            };
+          })
+          .filter(lvl => lvl.y !== null);
+
+        // Define horizontal span boundaries
+        const startX = fibSettings.extendLeft ? 0 : Math.min(x1, x2);
+        const endX = fibSettings.extendRight ? canvas.width : Math.max(x1, x2);
+
+        // 3. Draw Background Fills between levels
+        if (fibSettings.backgroundVisible && activeLevels.length > 1) {
+          // Sort active levels vertically by Y coordinate
+          const sortedLevels = [...activeLevels].sort((a, b) => a.y - b.y);
+          for (let i = 0; i < sortedLevels.length - 1; i++) {
+            const lvlA = sortedLevels[i];
+            const lvlB = sortedLevels[i + 1];
+            
+            const fillColor = fibSettings.useOneColor ? fibSettings.oneColor : lvlA.color;
+            ctx.fillStyle = fillColor;
+            
+            ctx.globalAlpha = fibSettings.backgroundOpacity;
+            ctx.fillRect(startX, lvlA.y, endX - startX, lvlB.y - lvlA.y);
+            ctx.globalAlpha = 1.0; // Reset opacity
+          }
+        }
+
+        // 4. Draw Level Lines
+        ctx.lineWidth = fibSettings.levelsLineWidth;
+        if (fibSettings.levelsLineStyle === 'dashed') {
+          ctx.setLineDash([4, 4]);
+        } else if (fibSettings.levelsLineStyle === 'dotted') {
+          ctx.setLineDash([1, 3]);
+        } else {
+          ctx.setLineDash([]);
+        }
+
+        activeLevels.forEach(lvl => {
+          const lineColor = fibSettings.useOneColor ? fibSettings.oneColor : lvl.color;
+          ctx.strokeStyle = lineColor;
+          ctx.beginPath();
+          ctx.moveTo(startX, lvl.y);
+          ctx.lineTo(endX, lvl.y);
+          ctx.stroke();
+        });
+        ctx.setLineDash([]);
+
+        // 5. Draw Labels & Annotations
+        ctx.font = `${fibSettings.fontSize}px Inter, sans-serif`;
+        activeLevels.forEach(lvl => {
+          const labelColor = fibSettings.useOneColor ? fibSettings.oneColor : lvl.color;
+          ctx.fillStyle = labelColor;
+
+          // Format ratio / percent value
+          let labelText = '';
+          if (fibSettings.showLevels) {
+            labelText += fibSettings.levelsFormat === 'percent'
+              ? `${(lvl.ratio * 100).toFixed(1)}%`
+              : `${lvl.ratio.toFixed(3)}`;
+          }
+
+          // Format price
+          if (fibSettings.showPrices) {
+            labelText += labelText ? ` (${lvl.price.toFixed(2)})` : `(${lvl.price.toFixed(2)})`;
+          }
+
+          // Format custom annotation text
+          if (lvl.text) {
+            labelText += labelText ? ` - ${lvl.text}` : lvl.text;
+          }
+
+          if (labelText) {
+            let tx = startX + 5;
+            if (fibSettings.labelsPosition === 'right') {
+              ctx.textAlign = 'right';
+              tx = endX - 5;
+            } else if (fibSettings.labelsPosition === 'center') {
+              ctx.textAlign = 'center';
+              tx = (startX + endX) / 2;
+            } else {
+              ctx.textAlign = 'left';
+            }
+            
+            ctx.fillText(labelText, tx, lvl.y - 4);
+          }
+        });
+        ctx.textAlign = 'left'; // Reset
+
+        // Selection handles
+        if (isSelected) {
+          ctx.fillStyle = '#ffffff';
+          ctx.strokeStyle = '#000000';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath(); ctx.arc(x1, y1, 5, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
+          ctx.beginPath(); ctx.arc(x2, y2, 5, 0, 2 * Math.PI); ctx.fill(); ctx.stroke();
         }
       }
     });
@@ -962,13 +1118,53 @@ export default function ChartContainer({
     const price = series.coordinateToPrice(y2);
 
     if (logical !== null && price !== null) {
+      const defaultSettings = activeTool === 'fibonacci' ? {
+        trendLineVisible: true,
+        trendLineColor: '#787b86',
+        trendLineWidth: 1,
+        trendLineStyle: 'dashed',
+        levelsLineWidth: 1,
+        levelsLineStyle: 'solid',
+        extendLeft: false,
+        extendRight: false,
+        useOneColor: false,
+        oneColor: '#38bdf8',
+        backgroundVisible: true,
+        backgroundOpacity: 0.15,
+        reverse: false,
+        showPrices: true,
+        showLevels: true,
+        levelsFormat: 'ratio',
+        labelsPosition: 'left',
+        fontSize: 10,
+        levels: [
+          { active: true, ratio: 0.0, color: '#787b86', text: '' },
+          { active: true, ratio: 0.236, color: '#ef5350', text: '' },
+          { active: true, ratio: 0.382, color: '#ff9800', text: '' },
+          { active: true, ratio: 0.5, color: '#4caf50', text: '' },
+          { active: true, ratio: 0.618, color: '#009688', text: '' },
+          { active: true, ratio: 0.786, color: '#00bcd4', text: '' },
+          { active: true, ratio: 1.0, color: '#787b86', text: '' },
+          { active: true, ratio: 1.618, color: '#2196f3', text: '' },
+          { active: true, ratio: 2.618, color: '#9c27b0', text: '' },
+          { active: false, ratio: 3.618, color: '#ab47bc', text: '' },
+          { active: false, ratio: 4.236, color: '#e91e63', text: '' }
+        ],
+        visibility: {
+          seconds: true,
+          minutes: true,
+          hours: true,
+          days: true,
+        }
+      } : { lineColor: '#38bdf8', lineWidth: 2, lineStyle: 'solid' };
+
       const newDrawing = {
         id: Date.now(),
         type: activeTool,
         symbol: activeSymbol,
         p1: drawingStartRef.current,
         p2: { logical, price },
-        settings: { lineColor: '#38bdf8', lineWidth: 2, lineStyle: 'solid' }
+        settings: defaultSettings
       };
       setDrawings([...drawings, newDrawing]);
       setSelectedDrawingId(newDrawing.id);
