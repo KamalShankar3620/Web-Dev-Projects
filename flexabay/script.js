@@ -62,7 +62,6 @@ function checkAuthState() {
                     <div class="user-dropdown-info">
                         <span class="user-dropdown-email" title="${userEmail}">${userEmail}</span>
                     </div>
-                    <div class="user-dropdown-divider"></div>
                     <a href="pages/my-orders.html">My Orders</a>
                     <a href="#" onclick="handleLogout(event)">Sign Out</a>
                 </div>
