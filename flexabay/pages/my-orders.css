@@ -225,6 +225,7 @@ nav {
     font-weight: 700;
     color: var(--black);
     margin-bottom: 0.15rem;
+    white-space: nowrap;
 }
 
 .order-date-text {
@@ -419,6 +420,7 @@ nav {
 
 .timeline-content {
     flex: 1;
+    min-width: 0;
     padding-top: 1px;
 }
 
