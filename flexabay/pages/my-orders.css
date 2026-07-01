@@ -439,6 +439,8 @@ nav {
 .timeline-time {
     font-size: 0.74rem;
     color: var(--slate);
+    flex-shrink: 0;
+    margin-left: 0.5rem;
 }
 
 .timeline-desc {
