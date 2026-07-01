@@ -378,6 +378,10 @@ nav {
     letter-spacing: 0.5px;
 }
 
+.pipeline-section {
+    min-width: 0;
+}
+
 /* Vertical Timeline styling */
 .timeline {
     position: relative;
