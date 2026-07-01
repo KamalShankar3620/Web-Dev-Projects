@@ -27,6 +27,7 @@ body {
     color: var(--black);
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Typography styling matching dashboard standards */

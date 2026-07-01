@@ -14,12 +14,10 @@
     <title>FlexaBay.com</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;1,500&display=swap"
         rel="stylesheet">
-
-
 </head>
 
 <body>
@@ -27,18 +25,25 @@
     <nav>
         <a href="index.html" class="logo">Flexa<span>Bay</span></a>
         <div class="nav-right">
-            <ul>
-                <li><a href="#services">Services</a></li>
+            <ul id="navLinks">
+                <li><a href="#services" onclick="closeMobileMenu()">Services</a></li>
                 <li><a href="pages/about.html">About Us</a></li>
-                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#reviews" onclick="closeMobileMenu()">Reviews</a></li>
                 <li><a href="pages/login.html" class="nav-login">Login</a></li>
                 <li><a href="pages/submit.html" class="nav-cta">Get Started</a></li>
             </ul>
+            <button class="menu-toggle" id="menuToggle" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
         </div>
     </nav>
 
     <!-- hero section -->
-    <section class="hero-container">
+    <section class="hero">
         <div class="hero-left">
             <div class="eyebrow">
                 Trusted by thousands of students &amp; researchers
@@ -570,7 +575,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=2"></script>
 
 </body>
 

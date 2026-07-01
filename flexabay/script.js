@@ -5,53 +5,56 @@ function toggle(el) {
     if (!wasOpen) el.classList.add('open');
 }
 
-// Authentication status handling
-document.addEventListener('DOMContentLoaded', () => {
-    checkAuthState();
-    initThemeSwitcher();
-    
-    // Close user avatar dropdown if clicked outside
-    window.addEventListener('click', () => {
-        const dropdown = document.getElementById('userDropdown');
-        if (dropdown && dropdown.classList.contains('show')) {
-            dropdown.classList.remove('show');
-        }
-    });
+// Authentication status handling and setup running immediately
+initThemeSwitcher();
+checkAuthState();
 
-
-
-    // Highlight service card when clicked from footer
-    const serviceLinks = document.querySelectorAll('a[href^="#service-"]');
-    serviceLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            const targetId = link.getAttribute('href').substring(1);
-            highlightServiceCard(targetId);
-        });
-    });
-
-    // Also check on initial page load if hash exists
-    if (window.location.hash.startsWith('#service-')) {
-        setTimeout(() => {
-            const targetId = window.location.hash.substring(1);
-            highlightServiceCard(targetId);
-        }, 400);
+// Close user avatar dropdown if clicked outside
+window.addEventListener('click', () => {
+    const dropdown = document.getElementById('userDropdown');
+    if (dropdown && dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
     }
 });
+
+// Highlight service card when clicked from footer
+const serviceLinks = document.querySelectorAll('a[href^="#service-"]');
+serviceLinks.forEach(link => {
+    link.addEventListener('click', () => {
+        const targetId = link.getAttribute('href').substring(1);
+        highlightServiceCard(targetId);
+    });
+});
+
+// Also check on initial page load if hash exists
+if (window.location.hash.startsWith('#service-')) {
+    setTimeout(() => {
+        const targetId = window.location.hash.substring(1);
+        highlightServiceCard(targetId);
+    }, 400);
+}
 
 function checkAuthState() {
     const isLoggedIn = localStorage.getItem('flexabay_logged_in') === 'true';
     const navUl = document.querySelector('nav ul');
+    const navRight = document.querySelector('.nav-right');
     
-    if (isLoggedIn && navUl) {
+    if (isLoggedIn && navUl && navRight) {
         const userEmail = localStorage.getItem('flexabay_user_email') || 'student@university.edu';
         const userInitial = userEmail.substring(0, 1).toUpperCase();
         
         // Update navigation options for a logged-in user session
         navUl.innerHTML = `
-            <li><a href="#services">Services</a></li>
+            <li><a href="#services" onclick="closeMobileMenu()">Services</a></li>
             <li><a href="pages/about.html">About Us</a></li>
-            <li><a href="#reviews">Reviews</a></li>
-            <li class="user-profile-menu">
+            <li><a href="#reviews" onclick="closeMobileMenu()">Reviews</a></li>
+        `;
+
+        // Check if user profile menu already exists to prevent duplicate insertion
+        if (!document.querySelector('.user-profile-menu')) {
+            const profileDiv = document.createElement('div');
+            profileDiv.className = 'user-profile-menu';
+            profileDiv.innerHTML = `
                 <div class="user-avatar" onclick="toggleUserDropdown(event)">
                     ${userInitial}
                 </div>
@@ -63,8 +66,10 @@ function checkAuthState() {
                     <a href="pages/my-orders.html">My Orders</a>
                     <a href="#" onclick="handleLogout(event)">Sign Out</a>
                 </div>
-            </li>
-        `;
+            `;
+            
+            navRight.appendChild(profileDiv);
+        }
     }
 }
 
@@ -163,22 +168,21 @@ function initThemeSwitcher() {
 
     if (navRight) {
         navRight.appendChild(toggleBtn);
-    } else if (navSecure) {
-        // Dynamically wrap nav-back, toggleBtn, and nav-secure in a nav-right div
+    } else {
+        // Dynamically wrap nav-back and toggleBtn in a nav-right div
         const wrapper = document.createElement('div');
         wrapper.className = 'nav-right';
         
-        // Insert wrapper into nav before navSecure
-        navSecure.parentNode.insertBefore(wrapper, navSecure);
-        
-        // Move nav-back, toggleBtn, and nav-secure into the wrapper
         if (navBack) {
+            navBack.parentNode.insertBefore(wrapper, navBack);
             wrapper.appendChild(navBack);
+        } else {
+            navContainer.appendChild(wrapper);
         }
         wrapper.appendChild(toggleBtn);
-        wrapper.appendChild(navSecure);
-    } else {
-        navContainer.appendChild(toggleBtn);
+        if (navSecure) {
+            wrapper.appendChild(navSecure);
+        }
     }
 }
 
@@ -206,5 +210,24 @@ function setToggleIcon(btn, theme) {
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
             </svg>
         `;
+    }
+}
+
+// Mobile menu handlers
+function toggleMobileMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const menuToggle = document.getElementById('menuToggle');
+    if (navLinks) {
+        navLinks.classList.toggle('show');
+        menuToggle.classList.toggle('active');
+    }
+}
+
+function closeMobileMenu() {
+    const navLinks = document.getElementById('navLinks');
+    const menuToggle = document.getElementById('menuToggle');
+    if (navLinks) {
+        navLinks.classList.remove('show');
+        menuToggle.classList.remove('active');
     }
 }

@@ -30,6 +30,7 @@ body {
     color: var(--black);
     overflow-x: hidden;
     line-height: 1.6;
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Update all your bold heading selectors to look cleaner and more premium */
@@ -766,7 +767,7 @@ textarea {
 
 .btn-next.gold {
     background: var(--indigo);
-    color: var(--white);
+    color: #ffffff;
 }
 
 .btn-next.gold:hover {
@@ -837,7 +838,7 @@ textarea {
 
 /* ─── RIGHT PANEL (ORDER SUMMARY) ───────────────────── */
 .right-panel {
-    display: none;
+    display: none !important;
 }
 
 .summary-title {
