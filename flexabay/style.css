@@ -1845,13 +1845,10 @@
      /* Brand indigo2 */
  }
 
- /* Menu toggle button overrides for dark theme to match other icons */
- [data-theme="dark"] .menu-toggle {
-     color: #f8fafc !important;
-     border-color: rgba(99, 102, 241, 0.3) !important;
- }
- [data-theme="dark"] .menu-toggle:hover {
-     color: var(--indigo2) !important;
-     border-color: var(--indigo2) !important;
-     background: rgba(99, 102, 241, 0.1) !important;
- }
+  /* Menu toggle button overrides for dark theme */
+  [data-theme="dark"] .menu-toggle,
+  [data-theme="dark"] .menu-toggle:hover {
+      color: #ffffff !important;
+      background: transparent !important;
+      border: none !important;
+  }
