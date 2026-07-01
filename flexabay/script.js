@@ -230,3 +230,13 @@ function closeMobileMenu() {
         menuToggle.classList.remove('active');
     }
 }
+
+// Toggle before/after card on click/tap (useful for mobile)
+document.addEventListener('DOMContentLoaded', () => {
+    const baWrapper = document.querySelector('.ba-wrapper');
+    if (baWrapper) {
+        baWrapper.addEventListener('click', () => {
+            baWrapper.classList.toggle('active');
+        });
+    }
+});
