@@ -575,6 +575,7 @@
 
   .ba-before {
       position: relative;
+      min-height: inherit;
       padding: 2rem 2.5rem;
       display: flex;
       flex-direction: column;
