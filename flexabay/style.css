@@ -1269,6 +1269,10 @@
          border-bottom: 1px solid var(--border);
      }
 
+     nav ul li:last-child a {
+         border-bottom: none;
+     }
+
      nav ul li a:hover {
          background: rgba(79, 70, 229, 0.03);
      }
